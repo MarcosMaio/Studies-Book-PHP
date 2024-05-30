@@ -8,7 +8,7 @@ $exibir_tabela  =  true;
 // session_unset();
 $tarefas = buscar_tarefas($conexao);
 
-if (tem_post()) {
+if (request_date()) {
   // var_dump($_REQUEST);
 
   $concluida = 0;

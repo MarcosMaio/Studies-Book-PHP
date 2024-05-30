@@ -23,17 +23,23 @@ function buscar_contatos($conexao)
   return $contatos;
 }
 
-function gravar_tarefa($conexao, $contato)
+function gravar_contato($conexao, $contato)
 {
-  $sqlGravar = "
-  INSERT INTO contatos (nome, telefone, email, data_de_nascimento, favorito)
+  try {
+    $sqlGravar = "
+  INSERT INTO contatos (nome, celular, email, data_de_nascimento, favorito)
   VALUES (
     '{$contato['nome']}',
-    '{$contato['telefone']}',
+    '{$contato['celular']}',
     '{$contato['email']}',
     '{$contato['data_de_nascimento']}',
     '{$contato['favorito']}'
   )
   ";
-  mysqli_query($conexao,  $sqlGravar);
+    mysqli_query($conexao,  $sqlGravar);
+  } catch (\Exception $e) {
+    var_dump($e);
+    $tem_erros = true;
+    $erros_validacao['erro'] = 'Ocorreu um erro ao gravar o contato!';
+  }
 }

@@ -70,6 +70,9 @@
   </div>
 </form>
 
-<a class="orange" href="remover_concluidas.php">
+
+<?php if (!$tarefa['id'] > 0) : ?> 
+  <a class="orange" href="remover_concluidas.php">
   Remover Concluidas
 </a>
+<?php endif; ?>

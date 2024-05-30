@@ -45,9 +45,12 @@ function traduz_concluida($concluida)
 $tem_erros  =  false;
 $erros_validacao  =  [];
 
-function  tem_post()
+function  request_date()
 {
   if (count($_REQUEST)  >  0) {
+    if(count($_REQUEST)  ==  1 && array_key_exists('id', $_REQUEST)) {
+      return false;
+    }
     return true;
   }
   return false;
