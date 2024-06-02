@@ -11,7 +11,11 @@
   <?php if (!empty($tarefas)) : ?>
     <?php foreach ($tarefas as $tarefa) : ?>
       <tr>
-        <td><?php echo htmlspecialchars($tarefa['nome']); ?></td>
+        <td>
+          <a href="tarefa.php?id=<?php echo htmlspecialchars($tarefa['id']); ?>">
+            <?php echo htmlspecialchars($tarefa['nome']); ?>
+          </a>
+        </td>
         <td><?php echo htmlspecialchars($tarefa['descricao']); ?></td>
         <td><?php echo traduz_data_para_exibir($tarefa['prazo']); ?></td>
         <td><?php echo  traduz_prioridade($tarefa['prioridade']);  ?></td>

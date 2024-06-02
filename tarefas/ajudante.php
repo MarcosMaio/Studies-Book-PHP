@@ -81,3 +81,22 @@ function validar_data($data)
 
   return ($resultado == 1) ? true : false;
 }
+
+function tratar_anexos($anexo, $tmp) 
+{
+  // var_dump($anexo);
+  // die();
+  $padrao	=	'/^.+(\.pdf|\.zip)$/';
+  $resultado = preg_match($padrao, $anexo['arquivo']);
+
+  if($resultado == 0) {
+    return false ;
+  }
+  
+  move_uploaded_file(
+    $tmp,
+    "anexos/{$anexo['arquivo']}"
+  );
+
+  return true;
+}

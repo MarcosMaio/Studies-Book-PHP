@@ -23,10 +23,11 @@ function buscar_tarefas($conexao)
   return $tarefas;
 }
 
-function	buscar_tarefa($conexao,	$id) {
-  $sqlBusca	=	'SELECT	*	FROM	tarefas	WHERE	id	=	'	.	$id;
-  $resultado	=	mysqli_query($conexao,	$sqlBusca);
-  return	mysqli_fetch_assoc($resultado);
+function  buscar_tarefa($conexao,  $id)
+{
+  $sqlBusca  =  'SELECT	*	FROM	tarefas	WHERE	id	=	'  .  $id;
+  $resultado  =  mysqli_query($conexao,  $sqlBusca);
+  return  mysqli_fetch_assoc($resultado);
 }
 
 function duplicar_tarefa($conexao, $tarefa)
@@ -35,7 +36,7 @@ function duplicar_tarefa($conexao, $tarefa)
   gravar_tarefa($conexao, $tarefa_duplicada);
 }
 
-function remove_tarefa_concluidas($conexao) 
+function remove_tarefa_concluidas($conexao)
 {
   $sqlRemove = "DELETE FROM tarefas WHERE concluida = 1";
   mysqli_query($conexao, $sqlRemove);
@@ -59,10 +60,10 @@ function gravar_tarefa($conexao, $tarefa)
 
 function editar_tarefa($conexao, $tarefa)
 {
-  if($tarefa['prazo'] == '') {
-    $prazo	=	'NULL';
+  if ($tarefa['prazo'] == '') {
+    $prazo  =  'NULL';
   } else {
-    $prazo	=	"'{$tarefa['prazo']}'";
+    $prazo  =  "'{$tarefa['prazo']}'";
   }
 
   $sqlEditar = "
@@ -75,7 +76,7 @@ function editar_tarefa($conexao, $tarefa)
   WHERE id = {$tarefa['id']}
   ";
 
-  mysqli_query($conexao,	$sqlEditar);
+  mysqli_query($conexao,  $sqlEditar);
 }
 
 function remove_tarefa($conexao, $id)
@@ -84,4 +85,49 @@ function remove_tarefa($conexao, $id)
   mysqli_query($conexao, $sqlRemove);
   header('Location:	tarefas.php');
   die();
+}
+
+function  gravar_anexo($conexao,  $anexo)
+{
+  $sqlGravar  =  "INSERT	INTO	anexos_tarefas
+    (tarefa_id,	nome,	arquivo)
+      VALUES
+        (
+          {$anexo['tarefa_id']},
+          '{$anexo['nome']}',
+          '{$anexo['arquivo']}'
+        )
+    ";
+  mysqli_query($conexao,  $sqlGravar);
+}
+
+
+function buscar_anexos($conexao, $tarefa_id)
+{
+  $sql = "SELECT * FROM anexos_tarefas
+  WHERE tarefa_id = {$tarefa_id}";
+
+  $resultado = mysqli_query($conexao, $sql);
+
+  $anexos = [];
+
+  while ($anexo = mysqli_fetch_assoc($resultado)) {
+    $anexos[] = $anexo;
+  }
+
+  return $anexos;
+}
+
+function buscar_anexo($conexao, $id)
+{
+  $sqlBusca = 'SELECT * FROM anexos_tarefas WHERE id = ' . $id;
+  $resultado = mysqli_query($conexao, $sqlBusca);
+
+  return mysqli_fetch_assoc($resultado);
+}
+
+function remover_anexo($conexao, $id)
+{
+  $sqlRemover  =  "DELETE	FROM	anexos_tarefas	WHERE	id	=	{$id}";
+  mysqli_query($conexao,  $sqlRemover);
 }
