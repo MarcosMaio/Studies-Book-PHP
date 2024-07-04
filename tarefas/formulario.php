@@ -23,9 +23,9 @@
         <span style="color: red;"><?php echo $erros_validacao['prazo']; ?></span>
       <?php endif;  ?>
 
-      <input type="date" name="prazo" placeholder="dd/mm/yyyy" value="<?php
-                                              echo  traduz_data_para_exibir($tarefa['prazo']);
-                                              ?>" />
+      <input type="text" name="prazo" placeholder="dd/mm/yyyy" value="<?php
+                                                                      echo ($tarefa['prazo']);
+                                                                      ?>" />
     </label>
     <fieldset>
       <legend>Prioridade:</legend>
@@ -55,6 +55,8 @@
                                                           :  '';
                                                         ?> />
     </label>
+    
+
   </fieldset>
   <!-- Botão de envio -->
   <div style="display: flex; align-items: center; justify-content: space-between; margin: 0 20px;">
@@ -71,8 +73,8 @@
 </form>
 
 
-<?php if (!$tarefa['id'] > 0) : ?> 
+<?php if (!$tarefa['id'] > 0) : ?>
   <a class="orange" href="remover_concluidas.php">
-  Remover Concluidas
-</a>
+    Remover Concluidas
+  </a>
 <?php endif; ?>

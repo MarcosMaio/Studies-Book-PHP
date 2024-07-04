@@ -26,8 +26,7 @@ if (request_date()) {
     &&  strlen($_REQUEST['prazo'])  >  0
   ) {
     if (validar_data($_REQUEST['prazo'])) {
-      $tarefa['prazo']  =
-        traduz_data_para_exibir($_REQUEST['prazo']);
+      $tarefa['prazo'] = ($_REQUEST['prazo']);
     } else {
       $tem_erros  =  true;
       $erros_validacao['prazo']  =
@@ -37,6 +36,10 @@ if (request_date()) {
 
   if (!$tem_erros) {
     editar_tarefa($conexao,  $tarefa);
+    if(array_key_exists('lembrete', $_REQUEST) && $_REQUEST['lembrete'] == 1) {
+      $anexos = buscar_anexo($conexao, $tarefa['id']);
+      enviar_email($tarefa);
+    }
     header('Location:	tarefas.php');
     die();
   }

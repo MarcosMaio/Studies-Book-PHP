@@ -17,7 +17,7 @@
           </a>
         </td>
         <td><?php echo htmlspecialchars($tarefa['descricao']); ?></td>
-        <td><?php echo traduz_data_para_exibir($tarefa['prazo']); ?></td>
+        <td><?php echo ($tarefa['prazo']); ?></td>
         <td><?php echo  traduz_prioridade($tarefa['prioridade']);  ?></td>
         <td><?php echo traduz_concluida($tarefa['concluida']); ?></td>
         <td>

@@ -1,22 +1,13 @@
 <?php
-include "banco.php";
-include "ajudante.php";
+require "banco.php";
+require "ajudante.php";
 
-$tarefa  =  buscar_tarefa($conexao,  $_GET['id']);
-
-if(!is_array($tarefa)) {
-  http_response_code(404);
-  echo 'Tarefa não encontrada';
-  die();
-}
-
-$tem_erros  =  false;
-$erros_validacao  =  [];
-
+$contato = buscar_contato($_REQUEST['id'], $conexao);
 
 
 if (request_date()) {
-  $tarefa_id  = $_REQUEST['tarefa_id'];
+
+  $tarefa_id  = $_REQUEST['contato_id'];
 
   if (!array_key_exists('anexo', $_FILES) || $_FILES['anexo']['error'] != 0) {
     $tem_erros = true;
@@ -34,22 +25,32 @@ if (request_date()) {
     // var_dump($extensao, $arquivo_nome, $arquivo_nome_formatado, $uuid, $arquivo_formatado);
     // die();
     $anexo = [
-      'tarefa_id' => $tarefa_id,
+      'contato_id' => $tarefa_id,
       'nome' => $arquivo_nome,
       'arquivo' =>  $arquivo_formatado
     ];
 
     if (!tratar_anexos($anexo, $tmp)) {
       $tem_erros = true;
-      $erros_validacao['anexo'] = 'Envie anexos nos formatos zip, pdf.';
+      $erros_validacao['anexo'] = 'Envie anexos nos formatos png, jpg ou jpeg.';
     }
   }
+  
+  $anexos = buscar_anexos($conexao,  $_GET['id']);
 
-  if (!$tem_erros) {
-    gravar_anexo($conexao, $anexo);
+  if ($anexos == '' || $anexos == null) {
+    if (!$tem_erros) {
+      gravar_anexo($conexao, $anexo);
+    }
+  } else {
+    if (!$tem_erros) {
+      atualizaAnexo($conexao, $_GET['id'], $anexo);
+      unlink('anexos/' . $anexos[0]['arquivo']);
+    }
   }
 }
 
-$anexos  =  buscar_anexos($conexao,  $_GET['id']);
+$anexos = buscar_anexos($conexao,  $_GET['id']);
 
-include "template_tarefa.php";
+
+require "template_visualizar.php";

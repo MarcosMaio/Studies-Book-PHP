@@ -14,34 +14,34 @@ if (count($_REQUEST) > 0) {
         $erros_validacao['nome'] = 'O nome do contato é obrigatório!';
     }
 
-    if(strlen($_REQUEST['celular']) == 0) {
+    if (strlen($_REQUEST['celular']) == 0) {
         $tem_erros = true;
         $erros_validacao['celular'] = 'O celular do contato é obrigatório!';
     } else {
-      if(!valida_celular($_REQUEST['celular'])) {
-        $tem_erros = true;
-        $erros_validacao['celular'] = 'O celular do contato não é válido!';
-      }
+        if (!valida_celular($_REQUEST['celular'])) {
+            $tem_erros = true;
+            $erros_validacao['celular'] = 'O celular do contato não é válido!';
+        }
     }
 
-    if(strlen($_REQUEST['email']) == 0) {
+    if (strlen($_REQUEST['email']) == 0) {
         $tem_erros = true;
         $erros_validacao['email'] = 'O email do contato é obrigatório!';
     } else {
-      if(!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
-        $tem_erros = true;
-        $erros_validacao['email'] = 'O email do contato não é válido!';
-      }
+        if (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
+            $tem_erros = true;
+            $erros_validacao['email'] = 'O email do contato não é válido!';
+        }
     }
 
-    if(strlen($_REQUEST['data_de_nascimento']) == 0) {
+    if (strlen($_REQUEST['data_de_nascimento']) == 0) {
         $tem_erros = true;
         $erros_validacao['data_de_nascimento'] = 'A data de nascimento do contato é obrigatória!';
     } else {
-      if(!valida_data_nascimento($_REQUEST['data_de_nascimento'])) {
-        $tem_erros = true;
-        $erros_validacao['data_de_nascimento'] = 'A data de nascimento do contato não é válida!';
-      }
+        if (!valida_data_nascimento($_REQUEST['data_de_nascimento'])) {
+            $tem_erros = true;
+            $erros_validacao['data_de_nascimento'] = 'A data de nascimento do contato não é válida!';
+        }
     }
 
     if (!$tem_erros) {
@@ -143,10 +143,15 @@ if (count($_REQUEST) > 0) {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+        }
+
+        td {
+            font-size: 12px;
         }
 
         th {
@@ -185,14 +190,14 @@ if (count($_REQUEST) > 0) {
             <?php if ($tem_erros && array_key_exists('erro', $erros_validacao)) : ?>
                 <div class="error-message"><?php echo $erros_validacao['erro']; ?></div>
             <?php endif; ?>
-            
+
             <?php if ($tem_erros && array_key_exists('nome', $erros_validacao)) : ?>
                 <div class="error-message"><?php echo $erros_validacao['nome']; ?></div>
             <?php endif; ?>
-            
+
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" placeholder="Nome" value="<?php echo isset($_REQUEST['nome']) ? htmlspecialchars($_REQUEST['nome']) : ''; ?>" />
-            
+
             <?php if ($tem_erros && array_key_exists('celular', $erros_validacao)) : ?>
                 <div class="error-message"><?php echo $erros_validacao['celular']; ?></div>
             <?php endif; ?>
@@ -203,22 +208,22 @@ if (count($_REQUEST) > 0) {
             <?php if ($tem_erros && array_key_exists('email', $erros_validacao)) : ?>
                 <div class="error-message"><?php echo $erros_validacao['email']; ?></div>
             <?php endif; ?>
-            
+
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" placeholder="Email" value="<?php echo isset($_REQUEST['email']) ? htmlspecialchars($_REQUEST['email']) : ''; ?>" />
 
             <?php if ($tem_erros && array_key_exists('data_de_nascimento', $erros_validacao)) : ?>
                 <div class="error-message"><?php echo $erros_validacao['data_de_nascimento']; ?></div>
             <?php endif; ?>
-            
+
             <label for="data_de_nascimento">Data de Nascimento:</label>
             <input type="text" id="data_de_nascimento" placeholder="dd/mm/yyyy" name="data_de_nascimento" value="<?php echo isset($_REQUEST['data_de_nascimento']) ? htmlspecialchars($_REQUEST['data_de_nascimento']) : ''; ?>" />
-            
+
             <label>
                 <input type="checkbox" name="favorito" value="sim" <?php echo isset($_REQUEST['favorito']) ? 'checked' : ''; ?> />
                 Favorito
             </label>
-            
+
             <input type="submit" value="Cadastrar" />
         </fieldset>
     </form>
@@ -230,6 +235,7 @@ if (count($_REQUEST) > 0) {
             <th>Email</th>
             <th>Data de Nascimento</th>
             <th>Favorito</th>
+            <th>Opções</th>
         </tr>
 
         <?php if (!empty($contatos)) : ?>
@@ -240,6 +246,13 @@ if (count($_REQUEST) > 0) {
                     <td><?php echo htmlspecialchars($contato['email']); ?></td>
                     <td><?php echo htmlspecialchars($contato['data_de_nascimento']); ?></td>
                     <td><?php echo htmlspecialchars($contato['favorito']) ? 'Sim' : 'Não'; ?></td>
+                    <td>
+                        <div style="display: flex; gap: 20px;">
+                            <a class="yellow" href="visualizar.php?id=<?php echo  $contato['id'];  ?>">
+                                Visualizar
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         <?php else : ?>

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Gerenciador de Tarefas</title>
+  <title>Visualizador de Contato</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,8 +22,9 @@
       border-radius: 8px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      max-width: 800px;
+      max-width: 600px;
       width: 100%;
+      text-align: center;
     }
 
     h1 {
@@ -52,6 +53,14 @@
       display: block;
       margin-top: 10px;
       color: #333;
+      font-weight: bold;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 10px;
     }
 
     fieldset {
@@ -59,6 +68,7 @@
       border-radius: 4px;
       padding: 15px;
       margin-top: 20px;
+      text-align: left;
     }
 
     legend {
@@ -75,6 +85,9 @@
     input[type="file"] {
       display: block;
       margin-top: 10px;
+      padding: 5px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     input[type="submit"] {
@@ -85,6 +98,8 @@
       padding: 10px 20px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     input[type="submit"]:hover {
@@ -95,62 +110,39 @@
       color: red;
       font-size: 12px;
     }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th,
-    td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #f9f9f9;
-      color: #333;
-    }
-
-    tr:hover {
-      background-color: #f1f1f1;
-    }
   </style>
 </head>
 
 <body>
   <div id="bloco_principal">
-    <h1>Tarefa: <?php echo $tarefa['nome']; ?></h1>
+    <h1>Nome: <?php echo htmlspecialchars($contato['nome']); ?></h1>
+    <?php if (!empty($anexos)) : ?>
+      <img src="anexos/<?php echo htmlspecialchars($anexos[0]['arquivo']); ?>" alt="Anexo">
+    <?php endif; ?>
     <p>
-      <a href="tarefas.php">Voltar para a lista de tarefas</a>
+      <a href="tarefas.php">Voltar para a lista de contatos</a>
     </p>
     <p>
-      <strong>Concluída:</strong>
-      <?php echo traduz_concluida($tarefa['concluida']); ?>
+      <strong>Celular:</strong>
+      <?php echo htmlspecialchars($contato['celular']); ?>
     </p>
     <p>
-      <strong>Descrição:</strong>
-      <?php echo nl2br($tarefa['descricao']); ?>
+      <strong>E-mail:</strong>
+      <?php echo htmlspecialchars($contato['email']); ?>
     </p>
     <p>
-      <strong>Prazo:</strong>
-      <?php echo ($tarefa['prazo']); ?>
+      <strong>Data de Nascimento:</strong>
+      <?php echo htmlspecialchars($contato['data_de_nascimento']); ?>
     </p>
-    <p>
-      <strong>Prioridade:</strong>
-      <?php echo traduz_prioridade($tarefa['prioridade']); ?>
-    </p>
-    <h2>Anexos</h2>
+    <h2>Foto de Perfil</h2>
     <form action="" method="post" enctype="multipart/form-data">
       <fieldset>
-        <legend>Novo anexo</legend>
-        <input type="hidden" name="tarefa_id" value="<?php echo $tarefa['id']; ?>" />
+        <legend>Alterar Foto de Perfil</legend>
+        <input type="hidden" name="contato_id" value="<?php echo htmlspecialchars($contato['id']); ?>" />
         <label>
           <?php if ($tem_erros && array_key_exists('anexo', $erros_validacao)) : ?>
             <span class="erro">
-              <?php echo $erros_validacao['anexo']; ?>
+              <?php echo htmlspecialchars($erros_validacao['anexo']); ?>
             </span>
           <?php endif; ?>
           <input type="file" name="anexo" />
@@ -158,28 +150,6 @@
         <input type="submit" value="Cadastrar" />
       </fieldset>
     </form>
-    <h2>Anexos</h2>
-    <?php if (count($anexos) > 0) : ?>
-      <table>
-        <tr>
-          <th>Arquivo</th>
-          <th>Opções</th>
-        </tr>
-        <?php foreach ($anexos as $anexo) : ?>
-          <tr>
-            <td><?php echo $anexo['nome']; ?></td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 20px;">
-                <a style="color: #45a049;" href="anexos/<?php echo $anexo['arquivo']; ?>">Download</a>
-                <a style="color: red;" href="remover_anexo.php?id=<?php echo  $anexo['id'];  ?>">Remover</a>
-              </div>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </table>
-    <?php else : ?>
-      <p>Não há anexos para esta tarefa.</p>
-    <?php endif; ?>
   </div>
 </body>
 

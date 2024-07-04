@@ -1,9 +1,6 @@
 <?php
-$bdServidor  =  '127.0.0.1';
-$bdUsuario  =  'root';
-$bdSenha  =  '';
-$bdBanco  =  'estudos';
-$conexao  =  mysqli_connect($bdServidor,  $bdUsuario,  $bdSenha,  $bdBanco);
+
+require "config.php";
 
 if (mysqli_connect_errno($conexao)) {
   echo  "Problemas	para	conectar	no	banco.	Verifique	os	dados!";
@@ -60,6 +57,8 @@ function gravar_tarefa($conexao, $tarefa)
 
 function editar_tarefa($conexao, $tarefa)
 {
+  // var_dump($tarefa);
+  // die();
   if ($tarefa['prazo'] == '') {
     $prazo  =  'NULL';
   } else {
